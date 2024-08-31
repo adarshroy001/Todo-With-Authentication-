@@ -9,20 +9,20 @@ import ErrorHandler from "../middlewares/error.js";
 export const login  = async (req,res,next)=>{
    try {
     const { email , password } = req.body ; 
-    const existingUser = await User.findOne({email}).select("+password") ;
+    const user = await User.findOne({email}).select("+password") ;
      
-    if(!existingUser){
+    if(!user){
         return next(new ErrorHandler("User not Find Kindly Register",404)) ; 
        
     }
      
-    const isMatch =  await bcrypt.compare(password,existingUser.password) ;
+    const isMatch =  await bcrypt.compare(password,user.password) ;
     if(!isMatch){
-        return next(new ErrorHandler("Invalid Username or Password",404)) ; 
+        return next(new ErrorHandler("Invalid Username or Password",400)) ; 
       
     }
 
-    SendCookies(existingUser,res,`Welcome back , ${existingUser.name}`,201)
+    SendCookies(user,res,`Welcome back , ${user.name}`,200)
    } catch (error) {
     next(error) ; 
    }
@@ -33,9 +33,9 @@ export const register = async (req,res) => {
     try {
         const {name,email,password} = req.body ; 
     
-    const existingUser = await User.findOne({ email });
+    let user = await User.findOne({ email });
 
-    if (existingUser) {
+    if (user) {
         return res.status(404).json({
             success: false,
             message: "User Already Exists",
@@ -43,7 +43,7 @@ export const register = async (req,res) => {
     } 
 
     const hashedpassword = await bcrypt.hash(password,10)  ;
-    const user = await User.create({name,email,password: hashedpassword}) 
+     user = await User.create({name,email,password: hashedpassword}) 
  
     SendCookies(user,res,"Registered successfully", 201)
     } catch (error) {
