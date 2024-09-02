@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 export const SendCookies = (user,res,message,statusCode=200)=>{
- const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+ try{
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
 
 res.status(statusCode)
    .cookie("token", token, {
@@ -15,5 +16,12 @@ res.status(statusCode)
         success: true,
         message,
    });
+  console.log(token);
 
+  
+ }
+ catch(e){
+  console.log(e);
+ }
+ 
 }
