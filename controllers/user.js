@@ -51,11 +51,16 @@ export const register = async (req,res) => {
 
 };
 
-export const getMyProfile = (req,res)=> { 
+export const getMyProfile =  async (req,res)=> { 
+  try {
     res.status(200).json({
         success: true , 
         user: req.user
     })
+  } catch (error) {
+    console.log(error);
+    
+  }
 } ;
 
 export const logout = (req, res) => {
