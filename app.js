@@ -15,7 +15,7 @@ import cors from "cors" ;
  app.use(express.json()) ; 
  app.use(cookieParser()) ; 
  app.use(cors({
-   origin:  [process.env.FRONTEND_URL],
+   origin:  [process.env.FRONTEND_URL || "https://todo-by-adarsh.netlify.app"],
    methods:["GET" , "POST" ,"PUT", "DELETE"],
    credentials: true 
  }))  ;
