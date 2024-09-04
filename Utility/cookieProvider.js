@@ -1,15 +1,17 @@
 import jwt from "jsonwebtoken";
 export const SendCookies = (user,res,message,statusCode=200)=>{
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "15d"
+      });
+
 
     res.status(statusCode)
     .cookie("token", token, {
             httpOnly: true,
-            maxAge: 15 * 60 * 60 * 1000, // 15 hours
+            maxAge: 15*24 * 60 * 60 * 1000,
             sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
             secure: process.env.NODE_ENV === "Development" ? false : true,
-            domain: process.env.FRONTEND_URL, // Optional: Specify domain if needed
-            // path: "/", // Optional: Specify the path if needed
+            domain: process.env.FRONTEND_URL, 
     })
     .json({
             success: true,

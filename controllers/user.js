@@ -1,7 +1,6 @@
 import {User} from "../models/user.js"
 import bcrypt from "bcrypt" 
 import {SendCookies} from "../Utility/cookieProvider.js"
-import cookieParser from "cookie-parser";
 import ErrorHandler from "../middlewares/error.js";
 
 
