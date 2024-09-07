@@ -1,6 +1,6 @@
 import {User} from "../models/user.js"
 import bcrypt from "bcrypt" 
-import {SendCookies} from "../Utility/cookieProvider.js"
+import {sendCookie} from "../Utility/cookieProvider.js"
 import ErrorHandler from "../middlewares/error.js";
 
 
@@ -21,7 +21,7 @@ export const login  = async (req,res,next)=>{
       
     }
 
-    SendCookies(user,res,`Welcome back , ${user.name}`,200)
+    sendCookie(user,res,`Welcome back , ${user.name}`,200)
    } catch (error) {
     console.log(error);
    }
@@ -44,7 +44,7 @@ export const register = async (req,res) => {
     const hashedpassword = await bcrypt.hash(password,10)  ;
      user = await User.create({name,email,password: hashedpassword}) 
  
-    SendCookies(user,res,"Registered successfully", 201)
+    sendCookie(user,res,"Registered successfully", 201)
     } catch (error) {
         console.log(error);  
     }

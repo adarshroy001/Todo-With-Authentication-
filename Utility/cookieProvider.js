@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
-export const SendCookies = (user,res,message,statusCode=200)=>{
+
+export const sendCookie = (user,res,message,statusCode=200)=>{
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "15d"
       });
@@ -11,7 +12,7 @@ export const SendCookies = (user,res,message,statusCode=200)=>{
             maxAge: 15*24 * 60 * 60 * 1000,
             sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
             secure: process.env.NODE_ENV === "Development" ? false : true,
-            domain: process.env.FRONTEND_URL, 
+          
     })
     .json({
             success: true,
