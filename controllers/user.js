@@ -11,7 +11,7 @@ export const login  = async (req,res,next)=>{
     const user = await User.findOne({email}).select("+password") ;
      
     if(!user){
-        return next(new ErrorHandler("User not Find Kindly Register",404)) ; 
+        return next(new ErrorHandler("User not Find Kindly Register",400)) ; 
        
     }
      
@@ -23,7 +23,7 @@ export const login  = async (req,res,next)=>{
 
     SendCookies(user,res,`Welcome back , ${user.name}`,200)
    } catch (error) {
-    next(error) ; 
+    console.log(error);
    }
     
 }
@@ -35,7 +35,7 @@ export const register = async (req,res) => {
     let user = await User.findOne({ email });
 
     if (user) {
-        return res.status(404).json({
+        return res.status(400).json({
             success: false,
             message: "User Already Exists",
         });
@@ -46,7 +46,7 @@ export const register = async (req,res) => {
  
     SendCookies(user,res,"Registered successfully", 201)
     } catch (error) {
-        next(error);
+        console.log(error);  
     }
 
 };
@@ -58,8 +58,7 @@ export const getMyProfile =  async (req,res)=> {
         user: req.user
     })
   } catch (error) {
-    console.log(error);
-    
+    console.log(error);  
   }
 } ;
 
@@ -71,6 +70,7 @@ export const logout = (req, res) => {
         httpOnly: true, // Add this to enhance security
     }).json({
         success: true,
+        user: req.user,
         message: "Logout successfully",
     });
 };
